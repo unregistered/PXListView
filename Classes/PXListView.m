@@ -605,6 +605,11 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 #pragma mark -
 #pragma mark Sizing
 
+-(void)windowSizing:(NSNotification *)inNot
+{
+    [self layoutCellsForResizeEvent];
+}
+
 - (void)viewWillStartLiveResize
 {
     _widthPriorToResize = NSWidth([self contentViewRect]);
@@ -655,10 +660,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
         [[NSNotificationCenter defaultCenter] removeObserver:self name:NSSplitViewDidResizeSubviewsNotification object:self.superview];
 }
 
--(void)windowSizing:(NSNotification *)inNot
-{
-    [self layoutCellsForResizeEvent];
-}
+
 
 #pragma mark -
 #pragma mark Accessibility
