@@ -568,7 +568,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	NSPoint newScrollPoint = rowRect.origin;
     
     //Have we over-scrolled?
-	if(NSMaxY(rowRect) > NSMaxY(visibleRect)) {
+	if(NSMaxY(rowRect) > NSMaxY(visibleRect) || ( newScrollPoint.y > _totalHeight - NSHeight(visibleRect) )) {
 		newScrollPoint.y = _totalHeight - NSHeight(visibleRect);
     }
 	
@@ -593,12 +593,16 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	NSPoint newScrollPoint = rowRect.origin;
     
     //Have we over-scrolled?
-	if(NSMaxY(rowRect) > NSMaxY(visibleRect)) {
+	if(NSMaxY(rowRect) > NSMaxY(visibleRect)|| ( newScrollPoint.y > _totalHeight - NSHeight(visibleRect) )) {
 		newScrollPoint.y = _totalHeight - NSHeight(visibleRect);
     }
 	
 	[[self contentView] scrollToPoint:newScrollPoint];
 	[self reflectScrolledClipView:[self contentView]];
+}
+
+- (void)scrollToEndOfDocument:(id)sender {
+    [self scrollToRow:(_numberOfRows-1)];
 }
 
 

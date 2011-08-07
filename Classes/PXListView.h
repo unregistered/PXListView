@@ -74,5 +74,6 @@
 
 - (void)scrollToRow:(NSUInteger)row;
 - (void)scrollRowToVisible:(NSUInteger)row;
+- (void)scrollToEndOfDocument:(id)sender;
 
 @end
