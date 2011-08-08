@@ -286,6 +286,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	NSRange visibleRange = [self visibleRange];
 	NSRange intersectionRange = NSIntersectionRange(visibleRange, _currentRange);
 	
+    
 	//Have the cells we need to display actually changed?
 	if((visibleRange.location == _currentRange.location) && (NSMaxRange(visibleRange) == NSMaxRange(_currentRange))) {
 		return;
@@ -313,7 +314,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 			}
 		}
         
-		if(visibleRange.location > _currentRange.location) // Remove top.
+		if( ( visibleRange.location > _currentRange.location ) && ([_visibleCells count] > 0)  ) // Remove top.
 		{
 			for(NSUInteger i = visibleRange.location; i > _currentRange.location; i--)
 			{
@@ -333,7 +334,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 			}
 		}
 		
-        if(NSMaxRange(visibleRange) < NSMaxRange(_currentRange)) // Remove bottom.
+        if( ( NSMaxRange(visibleRange) < NSMaxRange(_currentRange) ) &&  ([_visibleCells count] > 0)) // Remove bottom.
 		{
 			for(NSUInteger i = NSMaxRange(_currentRange); i > NSMaxRange(visibleRange); i--)
 			{
@@ -569,7 +570,11 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
     
     //Have we over-scrolled?
 	if(NSMaxY(rowRect) > NSMaxY(visibleRect) || ( newScrollPoint.y > _totalHeight - NSHeight(visibleRect) )) {
-		newScrollPoint.y = _totalHeight - NSHeight(visibleRect);
+        if ( _totalHeight >= NSHeight(visibleRect) ){
+            newScrollPoint.y = _totalHeight - NSHeight(visibleRect);
+        } else {
+            newScrollPoint.y = 0;
+        }
     }
 	
 	[[self contentView] scrollToPoint:newScrollPoint];
@@ -594,7 +599,11 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
     
     //Have we over-scrolled?
 	if(NSMaxY(rowRect) > NSMaxY(visibleRect)|| ( newScrollPoint.y > _totalHeight - NSHeight(visibleRect) )) {
-		newScrollPoint.y = _totalHeight - NSHeight(visibleRect);
+        if ( _totalHeight >= NSHeight(visibleRect) ){
+            newScrollPoint.y = _totalHeight - NSHeight(visibleRect);
+        } else {
+            newScrollPoint.y = 0;
+        }
     }
 	
 	[[self contentView] scrollToPoint:newScrollPoint];
