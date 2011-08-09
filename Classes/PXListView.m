@@ -124,6 +124,8 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 		PXListViewCell *cell = [_visibleCells objectAtIndex:i];
 		[_reusableCells addObject:cell];
 		[cell setHidden:YES];
+        [cell prepareForReuse];
+
 	}
 	
 	[_visibleCells removeAllObjects];
@@ -153,11 +155,13 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 #pragma mark -
 #pragma mark Cell Handling
 
+
 -(void)enqueueCell:(PXListViewCell*)cell
 {
 	[_reusableCells addObject:cell];
 	[_visibleCells removeObject:cell];
 	[cell setHidden:YES];
+    [cell prepareForReuse];
 }
 
 - (PXListViewCell*)dequeueCellWithReusableIdentifier: (NSString*)identifier
@@ -177,8 +181,6 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 			//Make sure it doesn't get dealloc'd early:
 			[[cell retain] autorelease];            
 			[_reusableCells removeObjectAtIndex:(i-1)];
-			[cell prepareForReuse];
-			
 			return cell;
 		}
 	}
@@ -295,7 +297,10 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	if((intersectionRange.location == 0) && (intersectionRange.length == 0))
 	{
 		// We'll have to rebuild all the cells:
-		[_reusableCells addObjectsFromArray:_visibleCells];
+        for(PXListViewCell *cell in _visibleCells){
+            [_reusableCells addObject:cell];
+            [cell prepareForReuse];
+        }
 		[_visibleCells removeAllObjects];
 		[[self documentView] setSubviews:[NSArray array]];
 		[self addCellsFromVisibleRange];
