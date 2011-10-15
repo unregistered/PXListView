@@ -15,7 +15,7 @@
 @implementation PXListDocumentView
 
 @synthesize listView = _listView;
-@synthesize dropHighlight = _dropHighlight;
+
 
 - (BOOL)isFlipped
 {
@@ -58,6 +58,10 @@
 		[NSBezierPath strokeRect: theBox];
 		//NSLog( @"drawing drop ABOVE indicator" );
 	}
+}
+
+- (PXListViewDropHighlight) dropHighlight {
+    return _dropHighlight;
 }
 
 -(void)	setDropHighlight: (PXListViewDropHighlight)inState
