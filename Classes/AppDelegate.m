@@ -79,7 +79,7 @@
 
 - (void)listViewSelectionDidChange:(NSNotification*)aNotification
 {
-    NSLog(@"Selection changed");
+//    NSLog(@"Selection changed");
 }
 
 
